@@ -16,10 +16,6 @@ spec:
     spec:
       containers:
       - name: flaskweb
-        image: bopgeek/pipeline_demo:latest
-        resources:
-          limits:
-            memory: "128Mi"
-            cpu: "500m"
+        image: bopgeek/pipeline_demo
         ports:
         - containerPort: 8000
