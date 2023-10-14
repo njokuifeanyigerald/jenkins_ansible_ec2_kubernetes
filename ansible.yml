@@ -1,13 +1,13 @@
 - hosts: all
   become: true
-  vars:
-    kubeconfig: https://192.168.49.2:8443
+  # vars:
+  #   kubeconfig: https://192.168.49.2:8443
   tasks: 
      - name: delete old deployment
-       command: kubectl delete -f /home/ubuntu/deployment.yml
+       command: kubectl delete -f deployment.yml
      - name: delete old service
-       command: kubectl delete -f /home/ubuntu/service.yml
+       command: kubectl delete -f ervice.yml
      - name: create new deployment
-       command: kubectl apply -f /home/ubuntu/deployment.yml
+       command: kubectl apply -f deployment.yml
      - name: create new service
-       command: kubectl apply -f /home/ubuntu/service.yml
+       command: kubectl apply -f service.yml
