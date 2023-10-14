@@ -20,16 +20,53 @@ restart the service
 ```bash
 service sshd restart
 ```
-in only the ansible server
--
+create a new user in both the ansible and webserver
+-------------------
+
 ```bash
-sudo su
+sudo adduser username
+```
+This command will prompt you to set a password and provide additional information about the new user.
+
+Granting Administrative Privileges (sudo access):
+Open the sudoers file using the visudo command. This command opens the file in the default text editor, ensuring that syntax errors are checked before saving.
+
+```bash
+sudo visudo
+```
+Find the line that looks like:
+
+```html
+%admin   ALL=(ALL:ALL) ALL
+```
+This line grants sudo access to users in the sudo group.
+To grant administrative privileges to your user, add a line below it:
+
+```html
+username   ALL=(ALL) NOPASSWD: ALL
+```
+Replace username with the actual username you created.
+
+Save the changes and exit the editor.
+
+Testing Sudo Access:
+-----------------
+Switch to the newly created user:
+
+```bash
+su - username
+```
+
+in only the ansible server
+------------------------------
+
+```bash
 ssh-keygen
-ssh-copy-id -i /root/.ssh/id_rsa.pub  root@172.31.18.69
+ssh-copy-id -i /root/.ssh/id_rsa.pub  username@172.31.18.69
 ```
 then ssh into the server, this time you won't need to input password
 ```bash
-ssh root@172.31.18.69
+ssh username@172.31.18.69
 ```
 install ansible on the ansible server using this [link](https://github.com/njokuifeanyigerald/installation_scripts/blob/master/ansible.sh)
 

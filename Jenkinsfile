@@ -21,8 +21,8 @@ pipeline{
                 echo "====++++executing sending docker file to ansible server over ssh++++===="
                 script {
                     sshagent(['ansible_server']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161'
-                        sh 'scp /var/lib/jenkins/workspace/pipeline_demo/*  ubuntu@172.31.38.161:/home/ubuntu'  
+                        sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161'
+                        sh 'scp /var/lib/jenkins/workspace/pipeline_demo/*  gerald-ansible@172.31.38.161:/home/gerald-ansible'  
                     }
                 }
             }
@@ -41,8 +41,8 @@ pipeline{
                 echo "====++++executing docker build images++++===="
                 script{
                     sshagent(['ansible_server']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 cd /home/ubuntu'
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 docker  build -t $JOB_NAME:V1.$BUILD_ID  --no-cache .'
+                        sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 cd /home/gerald-ansible'
+                        sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 docker  build -t $JOB_NAME:V1.$BUILD_ID  --no-cache .'
                     }
                 }
             }
@@ -61,9 +61,9 @@ pipeline{
                 echo "====++++executing docker image tagging++++===="
                 script{
                     sshagent(['ansible_server']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 cd /home/ubuntu'
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 docker  tag  $JOB_NAME:V1.$BUILD_ID bopgeek/$JOB_NAME:V1.$BUILD_ID '
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 docker  tag  $JOB_NAME:V1.$BUILD_ID bopgeek/$JOB_NAME:latest'
+                        sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 cd /home/gerald-ansible'
+                        sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 docker  tag  $JOB_NAME:V1.$BUILD_ID bopgeek/$JOB_NAME:V1.$BUILD_ID '
+                        sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 docker  tag  $JOB_NAME:V1.$BUILD_ID bopgeek/$JOB_NAME:latest'
                     }
                 }
             }
@@ -84,10 +84,10 @@ pipeline{
                 script{
                     sshagent(['ansible_server']) {
                         withCredentials([string(credentialsId: 'dockerhub', variable: 'dockerhubcred')]) {
-                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 docker login -u bopgeek -p ${dockerhubcred} '
-                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 docker push bopgeek/$JOB_NAME:latest '
-                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 docker rmi $JOB_NAME:V1.$BUILD_ID bopgeek/$JOB_NAME:V1.$BUILD_ID '
-                            sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 docker rmi bopgeek/$JOB_NAME:latest  '
+                            sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 docker login -u bopgeek -p ${dockerhubcred} '
+                            sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 docker push bopgeek/$JOB_NAME:latest '
+                            sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 docker rmi $JOB_NAME:V1.$BUILD_ID bopgeek/$JOB_NAME:V1.$BUILD_ID '
+                            sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 docker rmi bopgeek/$JOB_NAME:latest  '
                         }
                     }
                 }               
@@ -107,8 +107,8 @@ pipeline{
                 echo "====++++executing coping files to the web server++++===="
                 script{
                     sshagent(['kub']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.69 '
-                        sh 'scp /var/lib/jenkins/workspace/pipeline_demo/*  ubuntu@172.31.43.69:/home/ubuntu'
+                        sh 'ssh -o StrictHostKeyChecking=no gerald@172.31.43.69 '
+                        sh 'scp /var/lib/jenkins/workspace/pipeline_demo/*  gerald@172.31.43.69:/home/gerald-ansible'
                     }
                 }
             }
@@ -129,9 +129,9 @@ pipeline{
                 script{
                     sshagent(['ansible_server']) {
 
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 cd /home/ubuntu'
-                        sh 'ssh -o StrictHostKeyChecking=no root@172.31.38.161 ansible -m ping node'
-                        // sh 'ssh -o StrictHostKeyChecking=no root@172.31.38.161 ansible-playbook ansible.yml'
+                        sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 cd /home/gerald-ansible'
+                        sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 ansible -m ping node'
+                        sh 'ssh -o StrictHostKeyChecking=no gerald-ansible@172.31.38.161 ansible-playbook ansible.yml'
                     }
                 }
             }
