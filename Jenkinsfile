@@ -107,8 +107,8 @@ pipeline{
                 echo "====++++executing coping files to the web server++++===="
                 script{
                     sshagent(['kub']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.42.243 '
-                        sh 'scp /var/lib/jenkins/workspace/pipeline_demo/*  ubuntu@172.31.42.243:/home/ubuntu'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.43.69 '
+                        sh 'scp /var/lib/jenkins/workspace/pipeline_demo/*  ubuntu@172.31.43.69:/home/ubuntu'
                     }
                 }
             }
@@ -123,34 +123,30 @@ pipeline{
             }
         }
 
+        stage("Kubernetes Deployment using ansible"){
+            steps{
+                echo "====++++executing Kubernetes Deployment using ansible++++===="
+                script{
+                    sshagent(credentials: ['ansible_server']) {
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 cd /home/ubuntu'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 ansible -m ping node'
+                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 ansible-playbook ansible.yml'
+                    }
+                }
+            }
+            post{
+                success{
+                    echo "====++++Kubernetes Deployment using ansible executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Kubernetes Deployment using ansible execution failed++++===="
+                }
         
-
-
-        // stage("Kubernetes Deployment using ansible"){
-        //     steps{
-        //         echo "====++++executing Kubernetes Deployment using ansible++++===="
-        //         script{
-        //             sshagent(credentials: ['ansible_server']) {
-        //                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 cd /home/ubuntu'
-        //                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 ansible -m ping node'
-        //                 sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 ansible-playbook ansible.yml'
-        //             }
-        //         }
-        //     }
-        //     post{
-        //         success{
-        //             echo "====++++Kubernetes Deployment using ansible executed successfully++++===="
-        //         }
-        //         failure{
-        //             echo "====++++Kubernetes Deployment using ansible execution failed++++===="
-        //         }
-        
-        //     }
-        // }
-
-
+            }
+        }
         
     }
+    
     post{
         always{
             echo "========always========"
