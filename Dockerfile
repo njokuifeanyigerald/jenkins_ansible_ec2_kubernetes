@@ -1,12 +1,20 @@
-FROM  centos:latest
-MAINTAINER codebygerald@gmail.com
-RUN yum install -y httpd \
- zip\
- unzip
-ADD https://www.free-css.com/assets/files/free-css-templates/download/page254/photogenic.zip /var/www/html/
-WORKDIR /var/www/html/
-RUN unzip photogenic.zip
-RUN cp -rvf photogenic/* .
-RUN rm -rf photogenic photogenic.zip
-CMD ["/usr/sbin/httpd", "-D", "FOREGROUND"]
-EXPOSE 80 22
+FROM python:3.6-slim
+
+RUN  apt-get clean && apt-get -y update
+
+RUN apt-get -y install \
+    nginx \
+    python3-dev \
+    build-essential
+
+
+
+
+COPY ./requirements.txt ./requirements.txt
+RUN pip install -r requirements.txt
+
+COPY ./main.py ./main.py 
+
+EXPOSE 8000
+
+CMD ["python3", "main.py"]

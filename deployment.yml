@@ -1,19 +1,25 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: gerald-deployment
+  name: flaskweb-deployment
+  labels:
+    app: flaskweb
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: gerald-deployment
+      app: flaskweb
   template:
     metadata:
       labels:
-        app: gerald-deployment
+        app: flaskweb
     spec:
       containers:
-      - name: gerald-deployment
-        image: bopgeek/pipeline-demo
-        imagePullPolicy: Always
+      - name: flaskweb
+        image: bopgeek/pipeline_demo
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
         ports:
-        - containerPort: 80
+        - containerPort: 8000
