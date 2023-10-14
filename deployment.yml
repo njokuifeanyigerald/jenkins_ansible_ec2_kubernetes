@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gerald-deployment
+spec:
+  selector:
+    matchLabels:
+      app: gerald-deployment
+  template:
+    metadata:
+      labels:
+        app: gerald-deployment
+    spec:
+      containers:
+      - name: gerald-deployment
+        image: bopgeek/pipeline-demo
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80

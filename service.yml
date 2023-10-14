@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: gerald-service
+spec:
+  selector:
+    app: gerald-deployment
+  ports:
+  - port: 8080
+    targetPort: 80
+    nodePort: 31200
+  type: LoadBalancer
