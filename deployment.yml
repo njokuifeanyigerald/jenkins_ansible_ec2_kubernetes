@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: flaskweb
-        image: bopgeek/pipeline_demo
+        image: bopgeek/pipeline_demo:latest
         resources:
           limits:
             memory: "128Mi"
