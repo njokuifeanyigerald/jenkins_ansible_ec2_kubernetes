@@ -127,7 +127,7 @@ pipeline{
             steps{
                 echo "====++++executing Kubernetes Deployment using ansible++++===="
                 script{
-                    sshagent(credentials: ['ansible_server']) {
+                    sshagent(['ansible_server']) {
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 cd /home/ubuntu'
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 ansible -m ping node'
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@172.31.38.161 ansible-playbook ansible.yml'
@@ -146,7 +146,7 @@ pipeline{
         }
         
     }
-    
+
     post{
         always{
             echo "========always========"
