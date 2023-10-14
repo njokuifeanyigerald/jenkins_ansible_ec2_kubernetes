@@ -4,7 +4,7 @@ pipeline{
         stage("git checkout"){
             steps{
                 echo "====++++executing git checkout++++===="
-                git 'https://github.com/njokuifeanyigerald/ansible_ec2_kubernetes.git'
+                git 'https://github.com/njokuifeanyigerald/jenkins_ansible_ec2_kubernetes.git'
             }
             post{
                 success{
